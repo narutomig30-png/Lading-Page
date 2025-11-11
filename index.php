@@ -18,11 +18,13 @@ try {
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+    <div class="containerInicio">
     <header>
-        <div class="container">
+         <div class="text">
             <h1>Bem-vindo à nossa Agência Digital</h1>
             <p>Soluções criativas para impulsionar o seu negócio.</p>
-        </div>
+         </div>
     </header>
 
     <main>
@@ -80,16 +82,24 @@ try {
                         <div class="error-message" id="error-servico_id"></div>
                     </div>
                     <button type="submit">Enviar</button>
+                </div>
                 </form>
                 <div id="form-response"></div>
-            </div>
         </section>
     </main>
+    </div>
+
+<br> <br> <br> <br> <br> 
 
     <footer>
-        <div class="container">
-            <p>&copy; 2024 Agência Digital. Todos os direitos reservados.</p>
-        </div>
+    <div class="footer-section">
+        <h3>Desenvolvido por </h3>
+        <h4>Pinesso e Miguel Vinícius</h4>
+    </div>
+    <div class="footer-section">
+        <h3>Turma:</h3>
+        <p>1º Ano A - SESI - Desenvolvimento de sistemas</p>
+    </div>
     </footer>
 
     <script src="app.js"></script>

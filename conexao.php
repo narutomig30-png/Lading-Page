@@ -1,21 +1,34 @@
 <?php
-// --- Configurações do Banco de Dados ---
+// Define as credenciais corretas para o banco de dados do projeto.
 $dbHost = 'localhost';
-$dbUser = 'root'; // Usuário do seu banco de dados
-$dbPass = '';     // Senha do seu banco de dados
-$dbName = 'landing_page_db'; // Nome do seu banco de dados
+$dbUser = 'root';
+$dbPass = 'Home@spSENAI2025!'; // Senha padrão do XAMPP/WAMP é vazia.
+$dbName = 'landing_page_db';
 
-// --- Conexão com o Banco de Dados ---
-// O @ suprime o warning padrão do PHP para que possamos lançar nossa própria exceção.
-$conn = @new mysqli($dbHost, $dbUser, $dbPass, $dbName);
+// Ativa o report de erros para que as exceções sejam lançadas
+mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
-// Checar conexão
-if ($conn->connect_error) {
-    // Lança uma exceção em vez de encerrar o script com die().
-    // Isso permite que o script que incluiu este arquivo (submit.php) capture o erro.
-    throw new Exception("Falha na conexão com o banco de dados. Verifique as credenciais em conexao.php.");
+try {
+    $conn = new mysqli($dbHost, $dbUser, $dbPass, $dbName);
+    $conn->set_charset("utf8mb4");
+} catch (mysqli_sql_exception $e) {
+    // Captura a exceção do MySQLi e lança uma exceção genérica com uma mensagem mais clara.
+    
+    // O código de erro 1049 significa "Unknown database".
+    if ($e->getCode() === 1049) {
+        throw new Exception("Erro: O banco de dados '$dbName' não foi encontrado. Você executou o script SQL que forneci para criar o banco?");
+    } 
+    // O código de erro 1045 significa "Access denied".
+    elseif ($e->getCode() === 1045) {
+        throw new Exception("Erro: Acesso negado para o usuário '$dbUser'. Verifique se a senha no arquivo 'conexao.php' está correta. A senha padrão do XAMPP é vazia.");
+    }
+    // O código de erro 2002 significa que não pode se conectar ao servidor.
+    elseif ($e->getCode() === 2002) {
+        throw new Exception("Erro: Não foi possível conectar ao servidor MySQL. Verifique se o MySQL está iniciado no painel do XAMPP.");
+    }
+    // Para outros erros
+    else {
+        throw new Exception("Erro de conexão com o banco de dados: " . $e->getMessage());
+    }
 }
-
-// Garante que a comunicação com o banco de dados use o charset correto.
-$conn->set_charset("utf8mb4");
 ?>
